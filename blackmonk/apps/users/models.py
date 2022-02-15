@@ -37,7 +37,6 @@ class User(AbstractUser):
     username = models.CharField(_("Username"), max_length=30, unique=True)
     dob = models.DateField(_("Date of Birth"), null=True, blank=True)
     profile_img = models.ImageField(_("Profile Image"), upload_to='profile', null=True, blank=True)
-
     phone = models.CharField(_("Phone"), max_length=30, null=True, blank=True)
 
     class Meta:
@@ -57,7 +56,6 @@ class Project(BaseModel):
     class PROJECT_TYPES(models.TextChoices):
         ECOMMERCE = 'EC', _('Ecommerce')
         ANALYTICS = 'AL', _('Analytics')
-        PORTAL = 'PR', _('Portal')
         BLOG = 'BL', _('Blog')
         IMAGE = 'IM', _('Image Gallery')
         PERSONAL = 'PR', _('Personal')
@@ -66,9 +64,9 @@ class Project(BaseModel):
     project_name = models.CharField(_('Project Name'), max_length=255)
     project_type = models.CharField(_('Project Type'), max_length=2, 
         choices=PROJECT_TYPES.choices, null=True, blank=True)
-    
-
-
+    project_desc = models.TextField(_('Project Description'), null=True, blank=True)
+    is_expired = models.BooleanField(_('Expired'), null=True, blank=True)
+    download_count = models.IntegerField(_('Download Count'), null=True, blank=True)
     class Meta:
         verbose_name = _("Project")
         verbose_name_plural = _("Projects")
