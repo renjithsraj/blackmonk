@@ -6,6 +6,7 @@ from ckeditor.fields import RichTextField
 from django.utils.translation import gettext as _
 from django.contrib.contenttypes.models import ContentType
 
+# BaseModel
 class BaseModel(models.Model):
     """ This is will not create an table in database """
     created = models.DateTimeField(_('Created'), auto_now_add=True)
@@ -15,7 +16,7 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-
+# User
 class UserPermission(BaseModel):
     role = models.CharField(_('Role'), max_length=255, null=True, blank=True)
     permissions = models.CharField(_('Permissions'), null=True, blank=True, max_length=255)
@@ -28,9 +29,7 @@ class UserPermission(BaseModel):
         return self.permission_name
 
 
-
-
-
+# User
 class User(AbstractUser):
     """ Extending Django admin User functional """
     about_me =  RichTextField()
@@ -52,3 +51,30 @@ class User(AbstractUser):
     
     def save(self, *args, **kwargs):
         return super().save(*args, **kwargs)
+
+
+class Project(BaseModel):
+    class PROJECT_TYPES(models.TextChoices):
+        ECOMMERCE = 'EC', _('Ecommerce')
+        ANALYTICS = 'AL', _('Analytics')
+        PORTAL = 'PR', _('Portal')
+        BLOG = 'BL', _('Blog')
+        IMAGE = 'IM', _('Image Gallery')
+        PERSONAL = 'PR', _('Personal')
+
+    user = models.ForeignKey(User, related_name='projects', on_delete=models.CASCADE)
+    project_name = models.CharField(_('Project Name'), max_length=255)
+    project_type = models.CharField(_('Project Type'), max_length=2, 
+        choices=PROJECT_TYPES.choices, null=True, blank=True)
+    
+
+
+    class Meta:
+        verbose_name = _("Project")
+        verbose_name_plural = _("Projects")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("Project_detail", kwargs={"pk": self.pk})
