@@ -7,4 +7,5 @@ urlpatterns = [
     path('accounts/login', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('accounts/register', RegisterView.as_view(), name='register'),
     path('activate/<uidb64>/<token>/', ActivateAccount.as_view(), name='activate'),
+    path('project/', ActivateAccount.as_view(), name='activate'),
 ]
