@@ -39,5 +39,9 @@ class UserForm(forms.ModelForm):
             email = self.cleaned_data.get('email')
         )
         return user
+    
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
 
 

@@ -14,7 +14,7 @@ from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_decode
 
 from django.contrib.auth import login
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str as force_text
 
 # Create your views here.
 
@@ -46,7 +46,7 @@ class RegisterView(View):
     
     def post(self, request, *args, **kwargs):
         form = UserForm(request.POST)
-        if form.isvalid():
+        if form.is_valid():
             user = form.save()
             user.set_password(form.cleaned_data['password'])
             user.is_active = False
